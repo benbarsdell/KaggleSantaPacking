@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 #endif
 	timer.stop();
 	cout << "Validation time = " << timer.getTime() << " s" << endl;
+	cout << "                = " << 1. / timer.getTime() << " Hz" << endl;
 	
 	timer.reset();
 	timer.start();
@@ -87,8 +88,6 @@ int main(int argc, char* argv[])
 	timer.stop();
 	cout << "Evaluation time = " << timer.getTime() << " s" << endl;
 	cout << "                = " << 1. / timer.getTime() << " Hz" << endl;
-	cout << "                = " << count / timer.getTime()/1e6
-	     << " mega-presents per second" << endl;
 	
 	if( validated ) {
 		cout << "Solution VERIFIED" << endl;

@@ -49,6 +49,17 @@ information, and
 For example:
 
 > $ OMP_NUM_THREADS=4 ./bin/check_solution_omp presents.csv mysubmissionfile.csv
+> Load time = 2.78873 s
+> Validating solution
+> Validation time = 0.518001 s
+>                 = 1.9305 Hz
+> Evaluating solution
+> Evaluation time = 0.080871 s
+>                 = 12.3654 Hz
+> Solution VERIFIED
+> --------------
+> SCORE: 5270836
+> --------------
 
 Contact
 -------
