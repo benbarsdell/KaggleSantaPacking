@@ -20,6 +20,9 @@ The validation routines check that:
 
 Building
 --------
+The code was developed and tested only on an Ubuntu system. Compiling on
+other operating systems will likely require some additional work.
+
 The code requires the [Thrust](http://thrust.github.io) header library, and
 optionally the [CUDA toolkit](https://developer.nvidia.com/cuda-toolkit) (which
 includes a compatible version of Thrust).
