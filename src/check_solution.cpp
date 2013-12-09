@@ -35,15 +35,12 @@ int main(int argc, char* argv[])
 #endif
 	
 	if( argc <= 2 ) {
-		cout << "Usage: " << argv[0] << " presents.csv submissionfile.csv [count=-1]" << endl;
+		cout << "Usage: " << argv[0] << " presents.csv submissionfile.csv" << endl;
 		return -1;
 	}
 	std::string presents_filename = argv[1];
 	std::string solution_filename = argv[2];
-	size_t count = (size_t)-1;
-	if( argc > 3 ) {
-		count = atoi(argv[3]);
-	}
+	
 	int sleigh_size = 1000;
 	
 	Stopwatch timer;
@@ -51,7 +48,6 @@ int main(int argc, char* argv[])
 	
 	SantaProblem  problem(sleigh_size, presents_filename);
 	SantaSolution solution(solution_filename);
-	count = solution.size();
 	
 	timer.stop();
 	cout << "Load time = " << timer.getTime() << " s" << endl;

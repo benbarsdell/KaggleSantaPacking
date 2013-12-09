@@ -234,32 +234,30 @@ make_range_reduce_functor(dtype init,
 
 struct collision_functor
 	: public thrust::binary_function<dtype,dtype,dtype> {
-	const_diter ids_begin;
-	const_diter xminima_begin;
-	const_diter xmaxima_begin;
-	const_diter yminima_begin;
-	const_diter ymaxima_begin;
-	collision_functor(const_diter ids_begin_,
-	                  const_diter xminima_begin_,
-	                  const_diter xmaxima_begin_,
-	                  const_diter yminima_begin_,
-	                  const_diter ymaxima_begin_)
-		: ids_begin(ids_begin_),
-		  xminima_begin(xminima_begin_),
-		  xmaxima_begin(xmaxima_begin_),
-		  yminima_begin(yminima_begin_),
-		  ymaxima_begin(ymaxima_begin_) {}
+	const dtype* ids;
+	const dtype* xminima;
+	const dtype* xmaxima;
+	const dtype* yminima;
+	const dtype* ymaxima;
+	collision_functor(const dtype* ids_,
+	                  const dtype* xminima_,
+	                  const dtype* xmaxima_,
+	                  const dtype* yminima_,
+	                  const dtype* ymaxima_)
+		: ids(ids_),
+		  xminima(xminima_), xmaxima(xmaxima_),
+		  yminima(yminima_), ymaxima(ymaxima_) {}
 	inline __host__ __device__
 	dtype operator()(dtype i, dtype j) const {
 		// Determine whether presents i and j collide (in the x-y plane)
-		dtype ixb = xminima_begin[ids_begin[i]];
-		dtype ixe = xmaxima_begin[ids_begin[i]];
-		dtype iyb = yminima_begin[ids_begin[i]];
-		dtype iye = ymaxima_begin[ids_begin[i]];
-		dtype jxb = xminima_begin[ids_begin[j]];
-		dtype jxe = xmaxima_begin[ids_begin[j]];
-		dtype jyb = yminima_begin[ids_begin[j]];
-		dtype jye = ymaxima_begin[ids_begin[j]];
+		dtype ixb = xminima[ids[i]];
+		dtype ixe = xmaxima[ids[i]];
+		dtype iyb = yminima[ids[i]];
+		dtype iye = ymaxima[ids[i]];
+		dtype jxb = xminima[ids[j]];
+		dtype jxe = xmaxima[ids[j]];
+		dtype jyb = yminima[ids[j]];
+		dtype jye = ymaxima[ids[j]];
 		return !(ixe < jxb || jxe < ixb ||
 		         iye < jyb || jye < iyb );
 	}
@@ -397,11 +395,12 @@ int SantaSolution::validate(const SantaProblem& problem,
 	                    range_ends.begin());
 	// For each interval, iterate through all z-collisions and compute
 	//   whether the collision also occurred in x and y dims.
-	collision_functor collision_func(ids.begin(),
-	                                 m_xminima.begin(),
-	                                 m_xmaxima.begin(),
-	                                 m_yminima.begin(),
-	                                 m_ymaxima.begin());
+	using thrust::raw_pointer_cast;
+	collision_functor collision_func(raw_pointer_cast(&ids[0]),
+	                                 raw_pointer_cast(&m_xminima[0]),
+	                                 raw_pointer_cast(&m_xmaxima[0]),
+	                                 raw_pointer_cast(&m_yminima[0]),
+	                                 raw_pointer_cast(&m_ymaxima[0]));
 	using thrust::make_counting_iterator;
 	// sum(count_collisions(index))
 	int collisions =
