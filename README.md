@@ -7,7 +7,8 @@ C++ code for validating and scoring solutions to the Kaggle holiday competition
 About
 -----
 The code uses the [Thrust](http://thrust.github.io) library and thus can be
-compiled for OpenMP, TBB or CUDA backends, making it very fast.
+compiled for OpenMP, TBB or CUDA backends, making it very fast on multicore
+CPUs and Nvidia GPUs.
 
 Methods are provided for efficiently validating and scoring a solution.
 The validation routines check that:
@@ -49,17 +50,28 @@ information, and
 For example:
 
 > $ OMP_NUM_THREADS=4 ./bin/check_solution_omp presents.csv mysubmissionfile.csv
+
 > Load time = 2.78873 s
+
 > Validating solution
+
 > Validation time = 0.518001 s
+
 >                 = 1.9305 Hz
+
 > Evaluating solution
+
 > Evaluation time = 0.080871 s
+
 >                 = 12.3654 Hz
+
 > Solution VERIFIED
-> --------------
+
+> - - - - - - -
+
 > SCORE: 5270836
-> --------------
+
+> - - - - - - -
 
 Contact
 -------
